@@ -79,11 +79,11 @@ public class Empleado {
         this.horasTrabajadas = horasTrabajadas;
     }
 
-    public String getDepartamento() {
+    public Departamento getDepartamento() {
         return departamento;
     }
 
-    public void setDepartamento(String departamento) {
+    public void setDepartamento(Departamento departamento) {
         this.departamento = departamento;
     }
 
