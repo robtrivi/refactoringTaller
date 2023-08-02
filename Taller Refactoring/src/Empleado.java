@@ -2,12 +2,11 @@ public class Empleado {
     private String nombre;
     private double salarioBase;
     private int horasTrabajadas;
-    private String departamento;
-    private double tarifaHora;
+    private Departamento departamento;
     private String genero;
 
     public Empleado(){}
-    public Empleado(String nombre, double salarioBase, int horasTrabajadas, String departamento, String genero) {
+    public Empleado(String nombre, double salarioBase, int horasTrabajadas, Departamento departamento, String genero) {
         this.nombre = nombre;
         this.salarioBase = salarioBase;
         this.horasTrabajadas = horasTrabajadas;
@@ -17,32 +16,35 @@ public class Empleado {
 
 
     public double calcularSalario() {
+        validarEntradas();
+    
+        double salarioTotal = salarioBase;
+    
+        calcularPagoHorasExtra(salarioTotal); // Actualizar salarioTotal con el pago por horas extra
+        calcularBonificacionDepartamento(salarioTotal); // Actualizar salarioTotal con el bono de departamento
+    
+        return salarioTotal;
+    }
+    
+    private void validarEntradas() {
         if (salarioBase <= 0) {
             throw new IllegalArgumentException("El salario debe ser mayor o igual a 0");
         }
-
+    
         if (horasTrabajadas < 0) {
             throw new IllegalArgumentException("Las horas trabajadas deben ser mayor o igual a 0");
         }
-
-        double salarioTotal = salarioBase;
-
+    }
+    
+    private void calcularPagoHorasExtra(double salarioTotal) {
         if (horasTrabajadas > 40) {
             salarioTotal += (horasTrabajadas - 40) * 50; // Pago de horas extra
         }
+    }
 
-        switch (departamento) {
-            case "Sistemas":
-                salarioTotal += 20;
-                break;
-            case "Contabilidad":
-                salarioTotal += 10;
-                break;
-            default:
-                break;
-        }
 
-        return salarioTotal;
+    private void calcularBonificacionDepartamento(double salarioTotal) {
+                salarioTotal += departamento.getExtraBonifacion();
     }
 
     public String getNombre() {
@@ -75,14 +77,6 @@ public class Empleado {
 
     public void setHorasTrabajadas(int horasTrabajadas) {
         this.horasTrabajadas = horasTrabajadas;
-    }
-
-    public double getTarifaHora() {
-        return tarifaHora;
-    }
-
-    public void setTarifaHora(double tarifaHora) {
-        this.tarifaHora = tarifaHora;
     }
 
     public String getDepartamento() {
